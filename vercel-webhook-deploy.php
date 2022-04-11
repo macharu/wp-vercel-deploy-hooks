@@ -563,10 +563,14 @@ class vdhp_vercel_webhook_deploy {
     public function fire_vercel_webhook(){
         $webhook_url = get_option('webhook_address');
         if($webhook_url){
-            $options = array(
-                'method'  => 'POST',
-            );
-            return wp_remote_post($webhook_url, $options);
+            $urls = explode(",", $webhook_url);
+            foreach ($urls as $url){
+                $options = array(
+                    'method'  => 'POST',
+                );
+                wp_remote_post($url, $options);
+            }
+            return true;
         }
         return false;
     }
